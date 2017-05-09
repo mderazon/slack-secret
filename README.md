@@ -11,6 +11,8 @@ A Slack [slash command](https://api.slack.com/slash-commands) that sends a secur
 
 It uses [sharelock.io](https://sharelock.io) to encrypt the message so that it can only be read by the people in the Slack channel that the message was posted in.
 
+![Screenshot](screenshot.gif)
+
 ### Tech
 - Slack api to create the slash command.
 - [Webtask](https://webtask.io) - Cool serverless architecture.
