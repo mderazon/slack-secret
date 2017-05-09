@@ -18,7 +18,7 @@ It uses [sharelock.io](https://sharelock.io) to encrypt the message so that it c
 - OAuth - Used to create the "Add to slack" button.
 
 ## Use
-You can just add the app to slack and use it right away in Slack:
+You can just [add the app](https://slack.com/oauth/authorize?&client_id=2348108152.180459748356&scope=commands,users:read.email,channels:read,users:read,groups:read,im:read) to slack and use it right away in Slack:
 ```
 /secret [some-secret]
 ```
