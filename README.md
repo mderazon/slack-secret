@@ -34,6 +34,11 @@ The build step inlines all local files into the one entry file and also runs the
 
 *Note*: there's a way to make webtask bundle other files in the project, but it bundles all external modules as well which results in a very big file that the webtask uploader rejects. See https://github.com/auth0/wt-cli/issues/121
 
+Once you deploy to webtask, there are also two [secret variables](https://webtask.io/docs/editor/secrets) that need to be set:
+1. `SLACK_VERIFICATION` - Slack verification code to match the incoming message.
+2. `SLACK_SECRET` - The app's secret.
+You can get them both from the Slack api dashboard.
+
 ## Permissions
 The app requests the following Slack permissions:
 1. `commands` - To be able to install itself in your team.
