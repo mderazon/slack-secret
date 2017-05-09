@@ -18,6 +18,8 @@ module.exports = function ({token, channelName, channelId}, callback) {
     })
   }
 
+  // each channel type (direct message, private group and channel) needs
+  // to be accessed differently from slack api
   let method
   switch (channelName) {
     case 'directmessage':
@@ -36,7 +38,6 @@ module.exports = function ({token, channelName, channelId}, callback) {
     }
 
     let users
-    // need to access users differently for each channel type
     if (channelName === 'directmessage') {
       users = response.ims
       .filter((im) => !im.is_user_deleted && im.id === channelId)

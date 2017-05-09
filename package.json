@@ -2,15 +2,23 @@
   "name": "slack-secret",
   "version": "1.0.0",
   "description": "Send a secret in slack channel via sharelock.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mderazon/slack-secret.git"
+  },
+  "author": "Michael DeRazon",
+  "bugs": {
+    "url": "https://github.com/mderazon/slack-secret/issues"
+  },
+  "homepage": "https://github.com/mderazon/slack-secret#readme",
   "main": "build/index.js",
   "scripts": {
     "start": "wt serve build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "standard",
     "build": "browserify src/index.js --no-bundle-external -s app -o build/index.js -t [ babelify --presets [ es2015 ] ]",
     "deploy": "wt update slack-secret build/index.js"
   },
-  "author": "Michael DeRazon",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
