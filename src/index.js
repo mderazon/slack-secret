@@ -4,12 +4,7 @@ const Webtask = require('webtask-tools')
 const bodyParser = require('body-parser')
 const getSlackEmails = require('./get-slack-emails')
 
-const slackToken = process.env.SLACK_TOKEN
-const slackVerification = process.env.SLACK_VERIFICATION
 const sharelockUrl = process.env.SHARELOCK_URL || 'https://sharelock.io'
-
-if (!slackToken) { throw new Error('Missing slack oauth token') }
-if (!slackVerification) { throw new Error('Missing slack verification token') }
 
 const app = express()
 
@@ -21,7 +16,16 @@ app.post('/', (req, res, next) => {
     return res.status(400).send()
   }
 
-  if (req.body.token !== slackVerification) {
+  // get env secrets
+  req.slackToken = req.webtaskContext.secrets.SLACK_TOKEN
+  req.slackVerification = req.webtaskContext.secrets.SLACK_VERIFICATION
+  req.sharelockUrl = req.webtaskContext.secrets.SHARELOCK_URL || 'https://sharelock.io'
+
+  if (!req.slackToken || !req.slackVerification) {
+    return res.status(400).send('App is missing SLACK_TOKEN or SLACK_VERIFICATION keys')
+  }
+
+  if (req.body.token !== req.slackVerification) {
     return res.status(400).send('Missing or incompatible Slack verification token.')
   }
 
@@ -40,7 +44,7 @@ app.post('/', (req, res, next) => {
 app.post('/', (req, res, next) => {
   const channelName = req.body.channel_name
   const channelId = req.body.channel_id
-  getSlackEmails({token: slackToken, channelName, channelId}, (err, emails) => {
+  getSlackEmails({token: req.slackToken, channelName, channelId}, (err, emails) => {
     if (err) {
       return console.error(err.message)
     }
@@ -51,7 +55,7 @@ app.post('/', (req, res, next) => {
 
 // create a sharelock url by using sharelock.io (unpublished) api
 app.post('/', (req, res, next) => {
-  request.post(`${sharelockUrl}/create`)
+  request.post(`${req.sharelockUrl}/create`)
   .send({d: req.message, a: req.emails.join(', ')})
   .end((err, response) => {
     if (err) {
